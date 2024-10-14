@@ -2,6 +2,7 @@ import { Share2 } from "lucide-react";
 import React from "react";
 
 const Message = () => {
+  const APP_URL = import.meta.env.VITE_APP_URL;
   return (
     <div className="flex flex-col justify-between bg-slate-800 border rounded-lg border-slate-600 p-4 shadow-lg transition-transform transform hover:scale-105 hover:shadow-xl duration-300">
       <h3 className="font-bold capitalize text-white text-lg mb-2">
@@ -19,7 +20,12 @@ const Message = () => {
           voluptatibus!
         </div>
         <div className="flex justify-end">
-          <div className="flex items-center gap-1 text-white hover:bg-gray-700 p-1 rounded cursor-pointer transition">
+          <div
+            onClick={(e) => {
+              console.log(`${APP_URL}`);
+            }}
+            className="flex items-center gap-1 text-white hover:bg-gray-700 p-1 rounded cursor-pointer transition"
+          >
             <Share2 size={16} color="white" />
             <span className="text-xs">Share</span>
           </div>

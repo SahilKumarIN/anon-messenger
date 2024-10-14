@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <div className="text-center w-full absolute bottom-2">
       <span className="text-white text-center">
         Made with 💖 by{" "}
-        <a className="text-indigo-900 font-bold underline" href="#">
+        <Link className="text-blue-300 font-bold underline" to="#">
           Sahil Kumar
-        </a>
+        </Link>
       </span>
     </div>
   );

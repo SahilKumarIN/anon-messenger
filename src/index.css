@@ -6,3 +6,22 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   background-color: slategrey;
 }
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #6373e1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #9dbfde;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
