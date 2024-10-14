@@ -16,35 +16,57 @@ export const DbProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
-  const createLink = async (userId, longUrl, shortUrl, customUrl = null) => {
+  const createRoom = async (roomName, roomId, userId) => {
     try {
-      const linkCreated = await databases.createDocument(
-        "short-links",
-        "short-link",
+      const roomCreated = await databases.createDocument(
+        "anon-messenger",
+        "anon-rooms",
         ID.unique(),
         {
-          longUrl,
+          roomName,
+          roomId,
           userId,
-          shortUrl,
-          customUrl,
         }
       );
       //console.log(linkCreated);
-      toast.success("Short link generated.");
+      toast.success("Anonymous Room generated.");
     } catch (error) {
       setError(error);
       toast.error(error?.message);
     }
   };
 
-  const getLinks = async (userId) => {
+  const createMessage = async (msgTitle, msgBody, roomId, userId) => {
+    try {
+      const messageCreated = await databases.createDocument(
+        "anon-messenger",
+        "anon-messages",
+        ID.unique(),
+        {
+          msgTitle,
+          msgBody,
+          userId,
+          roomId,
+        }
+      );
+      //console.log(linkCreated);
+      toast.success("anon-message sent✅");
+    } catch (error) {
+      setError(error);
+      toast.error(error?.message);
+    }
+  };
+
+  const getRoom = async (roomId) => {
     setLoading(true);
     try {
-      const links = await databases.listDocuments("short-links", "short-link", [
-        Query.equal("userId", userId),
-      ]);
+      const rooms = await databases.listDocuments(
+        "anon-messenger",
+        "anon-rooms",
+        [Query.equal("roomId", roomId)]
+      );
       //console.log(links);
-      return links;
+      return rooms.documents[0];
     } catch (error) {
       setError(error);
       toast.error(error?.message);
@@ -53,27 +75,19 @@ export const DbProvider = ({ children }) => {
     }
   };
 
-  const validateLink = async (shortUrl) => {
+  const validateRoom = async (roomId) => {
     setLoading(true);
     try {
       // Assuming you have a method to fetch documents by a query
-      const links = await databases.listDocuments("short-links", "short-link", [
-        Query.equal("shortUrl", shortUrl),
-      ]);
-      const customLinks = await databases.listDocuments(
-        "short-links",
-        "short-link",
-        [Query.equal("customUrl", shortUrl)]
+      const rooms = await databases.listDocuments(
+        "anon-messenger",
+        "anon-rooms",
+        [Query.equal("roomId", roomId)]
       );
 
       // Assuming the links collection has an array of documents
-      if (links.documents.length > 0) {
-        return links.documents[0];
-      } else if (customLinks.documents.length > 0) {
-        return customLinks.documents[0];
-      } else {
-        throw new Error(`Error redirecting to ${shortUrl}`);
-      }
+      console.log(rooms.documents.length);
+      return rooms.documents.length > 0;
     } catch (error) {
       setError(error);
       toast.error(error.message);
@@ -123,9 +137,10 @@ export const DbProvider = ({ children }) => {
       value={{
         database,
         loading,
-        createLink,
-        getLinks,
-        validateLink,
+        createRoom,
+        getRoom,
+        validateRoom,
+        createMessage,
         checkShortUrl,
         deleting,
         deleteLink,

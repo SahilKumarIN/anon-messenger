@@ -21,7 +21,7 @@ const Message = () => {
         </div>
         <div className="flex justify-end">
           <div
-            onClick={(e) => {
+            onClick={() => {
               console.log(`${APP_URL}`);
             }}
             className="flex items-center gap-1 text-white hover:bg-gray-700 p-1 rounded cursor-pointer transition"

@@ -3,21 +3,52 @@ import { ClipboardListIcon, PencilLine } from "lucide-react";
 import Message from "../components/Message";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useDb } from "../context/db-context";
+import { useAuth } from "../context/user-auth-context";
+import RoomComp from "../components/RoomComp";
 
 const Home = () => {
   const [modal, setModal] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [roomName, setRoomName] = useState(null);
 
+  const { validateRoom, createRoom } = useDb();
+  const { user } = useAuth();
+
+  function generateRoomId() {
+    let symbols =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let rndId = "";
+    for (let i = 0; i < 8; i++) {
+      rndId += symbols.charAt(Math.floor(Math.random() * 62));
+    }
+    if (validateRoom(rndId)) {
+      console.log(rndId);
+
+      setRoomId(rndId);
+      createRoom(roomName, rndId, user.$id);
+      return;
+    } else {
+      generateRoomId();
+    }
+  }
+
   return (
     <>
+      <h2 className="text-center text-white font-bold text-lg">
+        Messages you Recieved !
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 max-h-[80vh] overflow-y-scroll scroll-smooth">
-        {new Array(12).fill(null).map((_, index) => (
+        {new Array(4).fill(null).map((_, index) => (
           <Message key={index} />
         ))}
       </div>
+      <h2 className="text-center text-white font-bold text-lg">
+        Your Room's !
+      </h2>
+      <RoomComp />
       <div
-        className="fixed bottom-4 right-4 flex items-center gap-1 text-white bg-gray-700 p-2 rounded-full cursor-pointer shadow-md transition transform hover:scale-105"
+        className="fixed bottom-8 z-30 right-4 flex items-center gap-1 text-white bg-gray-700 p-2 rounded-full cursor-pointer shadow-md transition transform hover:scale-105"
         onClick={() => {
           setModal(true);
         }}
@@ -85,15 +116,7 @@ const Home = () => {
                 className={`w-2/3 bg-green-600 text-white px-4 py-2 rounded transition ${
                   roomId ? "opacity-50 cursor-not-allowed" : ""
                 }`}
-                onClick={() => {
-                  let symbols =
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                  let rndId = "";
-                  for (let i = 0; i < 8; i++) {
-                    rndId += symbols.charAt(Math.floor(Math.random() * 62));
-                  }
-                  setRoomId(rndId);
-                }}
+                onClick={() => generateRoomId()}
               >
                 Create
               </button>

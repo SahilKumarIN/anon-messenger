@@ -7,6 +7,8 @@ import About from "./pages/About";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Auth from "./pages/Auth";
+import NotFound from "./pages/NotFound";
+import Room from "./pages/Room";
 
 function App() {
   return (
@@ -41,6 +43,17 @@ function App() {
             </AuthCheck>
           }
         />
+
+        <Route
+          path="/room/:roomId"
+          element={
+            <AuthCheck>
+              <Room />
+            </AuthCheck>
+          }
+        />
+
+        <Route path="*" element={<NotFound />} />
 
         <Route path="/auth" element={<Auth />} />
       </Routes>

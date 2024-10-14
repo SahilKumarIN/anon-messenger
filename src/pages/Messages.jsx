@@ -1,15 +1,42 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDb } from "../context/db-context";
+import { useAuth } from "../context/user-auth-context";
+import toast from "react-hot-toast";
 
 const Messages = () => {
   const { id } = useParams();
   const [title, setTitle] = useState(null);
   const [message, setMessage] = useState(null);
+  const [roomDetails, setRoomDetails] = useState(null);
+
+  const { createMessage, getRoom } = useDb();
+  const { user } = useAuth();
+
+  const navigator = useNavigate();
+
+  useEffect(async () => {
+    const resp = await getRoom(id);
+    if (resp === null || resp === undefined) {
+      navigator("/");
+      toast.error("No room associated with this id.");
+    }
+    console.log(resp);
+    setRoomDetails(resp);
+  }, []);
+
+  function sendMessage() {
+    if (title !== null && message !== null) {
+      createMessage(title, message, id, user.$id);
+    } else {
+      toast.error("Details are empty!!!");
+    }
+  }
 
   return (
     <div className="w-full max-w-lg p-4 bg-slate-500 shadow-md shadow-gray-500 rounded-md mx-auto my-4 md:my-6 lg:my-8">
       <p className="text-center font-bold text-white text-lg md:text-xl">
-        {`Compose an <anon-message/> to ${id}`}
+        {`Compose an <anon-message/> to ${roomDetails?.roomName}`}
       </p>
       <form className="w-full">
         <fieldset className="flex flex-col gap-1 my-4">
@@ -56,7 +83,7 @@ const Messages = () => {
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            alert(JSON.stringify({ title, message }));
+            sendMessage();
           }}
         >
           Send
