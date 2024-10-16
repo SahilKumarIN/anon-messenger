@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ClipboardListIcon, PencilLine } from "lucide-react";
 import Message from "../components/Message";
 import { Link } from "react-router-dom";
@@ -11,8 +11,8 @@ const Home = () => {
   const [modal, setModal] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [roomName, setRoomName] = useState(null);
-
-  const { validateRoom, createRoom } = useDb();
+  const [allRooms, setAllRooms] = useState([]);
+  const { validateRoom, createRoom, getAllRooms } = useDb();
   const { user } = useAuth();
 
   function generateRoomId() {
@@ -24,7 +24,6 @@ const Home = () => {
     }
     if (validateRoom(rndId)) {
       console.log(rndId);
-
       setRoomId(rndId);
       createRoom(roomName, rndId, user.$id);
       return;
@@ -33,20 +32,42 @@ const Home = () => {
     }
   }
 
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const fetchRooms = async () => {
+      try {
+        const rooms = await getAllRooms(user.$id);
+        setAllRooms(rooms);
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
+      }
+    };
+
+    fetchRooms();
+  }, [getAllRooms]);
+
   return (
     <>
-      <h2 className="text-center text-white font-bold text-lg">
-        Messages you Recieved !
+      {/* <h2 className="text-center text-white font-bold text-lg">
+        Messages you Received!
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 max-h-[80vh] overflow-y-scroll scroll-smooth">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 ">
         {new Array(4).fill(null).map((_, index) => (
           <Message key={index} />
         ))}
+      </div> */}
+      <h2 className="text-center text-white font-bold text-lg">Your Rooms!</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 ">
+        {allRooms.length > 0 ? (
+          allRooms.map((room) => <RoomComp key={room.$id} data={room} />)
+        ) : (
+          <p className="text-white text-center">No rooms available.</p>
+        )}
       </div>
-      <h2 className="text-center text-white font-bold text-lg">
-        Your Room's !
-      </h2>
-      <RoomComp />
+
       <div
         className="fixed bottom-8 z-30 right-4 flex items-center gap-1 text-white bg-gray-700 p-2 rounded-full cursor-pointer shadow-md transition transform hover:scale-105"
         onClick={() => {

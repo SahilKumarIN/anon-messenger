@@ -26,14 +26,7 @@ function App() {
 
         <Route path="/new-message/:id" element={<Messages />} />
 
-        <Route
-          path="/contact"
-          element={
-            <AuthCheck>
-              <Contact />
-            </AuthCheck>
-          }
-        />
+        <Route path="/contact" element={<Contact />} />
 
         <Route
           path="/about"
@@ -47,9 +40,9 @@ function App() {
         <Route
           path="/room/:roomId"
           element={
-            <AuthCheck>
-              <Room />
-            </AuthCheck>
+            // <AuthCheck>
+            <Room />
+            // </AuthCheck>
           }
         />
 

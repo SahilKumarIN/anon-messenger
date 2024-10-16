@@ -96,30 +96,47 @@ export const DbProvider = ({ children }) => {
     }
   };
 
-  const checkShortUrl = async (shortUrl) => {
+  const getRoomMessages = async (roomId) => {
     setLoading(true);
     try {
-      // Assuming you have a method to fetch documents by a query
-      const links = await databases.listDocuments("short-links", "short-link", [
-        Query.equal("shortUrl", shortUrl),
-      ]);
-
-      // Assuming the links collection has an array of documents
-      if (links.documents.length > 0) {
-        return false;
-      }
-      return true;
+      const response = await databases.listDocuments(
+        "anon-messenger", // Database ID
+        "anon-messages", // Collection ID
+        [Query.equal("roomId", roomId)]
+      );
+      return response.documents;
+    } catch (error) {
+      setError(error);
+      toast.error(error?.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteLink = async (id) => {
+  const getAllRooms = async (userId) => {
+    setLoading(true);
+    try {
+      const response = await databases.listDocuments(
+        "anon-messenger", // Database ID
+        "anon-rooms", // Collection ID
+        [Query.equal("userId", userId)]
+      );
+      return response.documents; // Assuming the response contains a 'documents' array
+    } catch (error) {
+      setError(error);
+      toast.error(error?.message);
+      return null; // Return an empty array in case of error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteRoom = async (id) => {
     setDeleting(true);
     try {
-      const delLink = await databases.deleteDocument(
-        "short-links",
-        "short-link",
+      const delRoom = await databases.deleteDocument(
+        "anon-messenger",
+        "anon-rooms",
         id
       );
 
@@ -141,9 +158,10 @@ export const DbProvider = ({ children }) => {
         getRoom,
         validateRoom,
         createMessage,
-        checkShortUrl,
+        getAllRooms,
+        getRoomMessages,
         deleting,
-        deleteLink,
+        deleteRoom,
       }}
     >
       {children}

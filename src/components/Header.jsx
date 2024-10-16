@@ -30,12 +30,12 @@ const Header = () => {
                 Home
               </li>
             </Link>
-            <Link to="/new-message">
+            {/* <Link to="/">
               <li className="hover:text-white text-gray-600 font-semibold cursor-pointer flex items-center gap-1">
                 <PencilLineIcon size={14} color=" #4b5563" />
-                New Messages
+                Create a Room
               </li>
-            </Link>
+            </Link> */}
             <Link to="/about">
               <li className="hover:text-white text-gray-600 font-semibold cursor-pointer">
                 About

@@ -1,24 +1,25 @@
 import { Share2 } from "lucide-react";
 import React from "react";
 
-const Message = () => {
+const Message = ({ message }) => {
   const APP_URL = import.meta.env.VITE_APP_URL;
+  console.log(message);
   return (
     <div className="flex flex-col justify-between bg-slate-800 border rounded-lg border-slate-600 p-4 shadow-lg transition-transform transform hover:scale-105 hover:shadow-xl duration-300">
       <h3 className="font-bold capitalize text-white text-lg mb-2">
-        {"Message Title"}
+        {message?.msgTitle}
       </h3>
       <div>
         <div className="flex gap-4 text-xs font-medium text-gray-400 mb-4">
-          <span>08:38</span>
+          <span>
+            {String.toString(message?.createdAt).substring(
+              String.toString(message?.createdAt).indexOf("T"),
+              String.toString(message?.createdAt).indexOf(".")
+            )}
+          </span>
           <span>12 Oct, 2024</span>
         </div>
-        <div className="text-sm text-gray-300 mb-4">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. At nemo
-          doloribus repellat perferendis inventore magni sunt aut ad non dolorum
-          a accusantium vitae suscipit, vel eveniet ratione animi numquam
-          voluptatibus!
-        </div>
+        <div className="text-sm text-gray-300 mb-4">{message?.msgBody}</div>
         <div className="flex justify-end">
           <div
             onClick={() => {
