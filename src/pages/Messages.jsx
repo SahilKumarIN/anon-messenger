@@ -21,7 +21,7 @@ const Messages = () => {
       navigator("/");
       toast.error("No room associated with this id.");
     }
-    console.log(resp);
+    // console.log(resp);
     setRoomDetails(resp);
   }, []);
 

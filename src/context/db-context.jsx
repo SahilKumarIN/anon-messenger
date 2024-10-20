@@ -86,7 +86,7 @@ export const DbProvider = ({ children }) => {
       );
 
       // Assuming the links collection has an array of documents
-      console.log(rooms.documents.length);
+      // console.log(rooms.documents.length);
       return rooms.documents.length > 0;
     } catch (error) {
       setError(error);
@@ -140,7 +140,7 @@ export const DbProvider = ({ children }) => {
         id
       );
 
-      if (delLink.documents.length > 0) {
+      if (delRoom.documents.length > 0) {
         return true;
       }
       return false;

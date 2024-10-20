@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/*"
+  to = "https://sm-url.netlify.app/"
+  status = 200

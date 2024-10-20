@@ -41,17 +41,17 @@ export const AuthProvider = ({ children }) => {
         password,
         username
       );
-      console.log("User Registered:", newUser);
+      // console.log("User Registered:", newUser);
       // Automatically log in the user after successful registration
       const response = await account.createEmailPasswordSession(
         email,
         password
       );
-      console.log("User Response after registration:", response);
+      // console.log("User Response after registration:", response);
       setUser(response);
       toast.success("Registration and login successful!");
     } catch (registerError) {
-      console.error("Registration Error:", registerError);
+      // console.error("Registration Error:", registerError);
       setError(registerError);
       toast.error("Registration failed!");
     } finally {

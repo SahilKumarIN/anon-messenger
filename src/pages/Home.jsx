@@ -23,7 +23,7 @@ const Home = () => {
       rndId += symbols.charAt(Math.floor(Math.random() * 62));
     }
     if (validateRoom(rndId)) {
-      console.log(rndId);
+      // console.log(rndId);
       setRoomId(rndId);
       createRoom(roomName, rndId, user.$id);
       return;
