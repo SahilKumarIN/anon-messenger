@@ -46,6 +46,11 @@ const Header = () => {
                 Contact Us
               </li>
             </Link>
+            <Link to="/profile">
+              <li className="hover:text-white text-gray-600 font-semibold cursor-pointer">
+                Profile
+              </li>
+            </Link>
             <Link
               onClick={() => {
                 logout();

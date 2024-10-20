@@ -17,7 +17,7 @@ const Messages = () => {
 
   useEffect(async () => {
     const resp = await getRoom(id);
-    if (resp === null || resp === undefined) {
+    if (resp === undefined) {
       navigator("/");
       toast.error("No room associated with this id.");
     }

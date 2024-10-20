@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Room from "./pages/Room";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
           element={
             <AuthCheck>
               <About />
+            </AuthCheck>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <AuthCheck>
+              <UserProfile />
             </AuthCheck>
           }
         />
