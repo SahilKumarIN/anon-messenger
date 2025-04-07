@@ -3,14 +3,19 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="text-center w-full  py-2 bg-gray-700 opacity-70">
-      <span className="text-white text-center">
-        Made with 💖 by{" "}
-        <Link className="text-blue-300 font-bold underline" to="#">
-          Sahil Kumar
-        </Link>
-      </span>
-    </div>
+    <footer className="w-full bg-gray-700 opacity-90">
+      <div className="max-w-7xl mx-auto px-4 py-4 text-center">
+        <span className="text-white text-sm sm:text-base md:text-lg">
+          Made with 💖 by{" "}
+          <Link
+            className="text-blue-300 font-semibold underline hover:text-blue-400 transition"
+            to="#"
+          >
+            Sahil Kumar
+          </Link>
+        </span>
+      </div>
+    </footer>
   );
 };
 

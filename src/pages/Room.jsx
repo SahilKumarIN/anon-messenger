@@ -26,31 +26,43 @@ const Room = () => {
     };
 
     fetchRoomData();
-  }, []);
+  }, [roomId]);
 
   if (loading) {
-    return <div className="text-center text-white">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
+        <p className="text-lg animate-pulse">Loading...</p>
+      </div>
+    );
   }
 
   if (!roomDetails) {
-    return <div className="text-center text-white">Room not found</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
+        <p className="text-lg">Room not found</p>
+      </div>
+    );
   }
 
   return (
-    <div className="p-6 bg-slate-900 min-h-screen w-[80%] text-white">
-      <div className="bg-slate-800 border rounded-lg border-slate-600 p-6 mb-6 shadow-lg">
+    <div className="p-6 bg-slate-900 min-h-screen w-full max-w-7xl mx-auto text-white">
+      <div className="bg-slate-800 border border-slate-600 rounded-lg p-6 mb-6 shadow-md">
         <h1 className="text-2xl font-bold mb-2">{roomDetails.roomName}</h1>
         <p className="text-sm text-gray-400 mb-4">
           Created on:{" "}
-          {new Date(roomDetails.creationDate).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          {roomDetails.creationDate
+            ? new Date(roomDetails.creationDate).toLocaleString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "Unknown"}
         </p>
-        <p className="text-gray-300">{roomDetails.roomDescription}</p>
+        <p className="text-gray-300">
+          {roomDetails.roomDescription || "No description provided."}
+        </p>
       </div>
 
       <h2 className="text-xl font-semibold mb-4">Messages</h2>
@@ -58,7 +70,7 @@ const Room = () => {
         {messages.length > 0 ? (
           messages.map((msg, index) => <Message key={index} message={msg} />)
         ) : (
-          <div className="text-gray-400 col-span-full">
+          <div className="text-gray-400 col-span-full text-center">
             No messages yet. Share the room link to receive messages.
           </div>
         )}

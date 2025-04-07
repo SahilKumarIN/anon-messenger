@@ -14,25 +14,25 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here (e.g., sending data to the server)
+    // Handle form submission logic here
     // console.log("Form submitted:", formData);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 p-8">
-      <div className="bg-white rounded-lg shadow-lg max-w-3xl p-8 md:p-12 w-full">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 px-4 py-12">
+      <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 sm:p-10 md:p-14">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 text-center mb-4">
           Contact Us
         </h1>
-        <p className="text-gray-600 text-center mb-8">
+        <p className="text-gray-600 text-center mb-10 max-w-2xl mx-auto">
           Have questions, feedback, or need assistance? We’d love to hear from
           you. Fill out the form below, and we’ll get back to you as soon as
           possible.
         </p>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-1">
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-gray-700 font-medium mb-2">
                 Name
               </label>
               <input
@@ -41,12 +41,12 @@ const Contact = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Your Name"
-                className="w-full p-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 required
               />
             </div>
             <div className="flex-1">
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-gray-700 font-medium mb-2">
                 Email
               </label>
               <input
@@ -55,29 +55,31 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Your Email"
-                className="w-full p-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 required
               />
             </div>
           </div>
+
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-gray-700 font-medium mb-2">
               Message
             </label>
             <textarea
               name="message"
               value={formData.message}
               onChange={handleChange}
-              rows="5"
+              rows="6"
               placeholder="Write your message here..."
-              className="w-full p-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
+
           <div className="flex justify-center mt-8">
             <button
               type="submit"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-md transition transform hover:scale-105"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-md shadow transition-transform transform hover:scale-105"
             >
               Send Message
             </button>

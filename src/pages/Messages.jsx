@@ -6,89 +6,97 @@ import toast from "react-hot-toast";
 
 const Messages = () => {
   const { id } = useParams();
-  const [title, setTitle] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
   const [roomDetails, setRoomDetails] = useState(null);
 
   const { createMessage, getRoom } = useDb();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  const navigator = useNavigate();
+  useEffect(() => {
+    const fetchRoom = async () => {
+      const resp = await getRoom(id);
+      if (!resp) {
+        toast.error("No room associated with this ID.");
+        navigate("/");
+        return;
+      }
+      setRoomDetails(resp);
+    };
 
-  useEffect(async () => {
-    const resp = await getRoom(id);
-    if (resp === undefined) {
-      navigator("/");
-      toast.error("No room associated with this id.");
-    }
-    // console.log(resp);
-    setRoomDetails(resp);
-  }, []);
+    fetchRoom();
+  }, [id]);
 
-  function sendMessage() {
-    if (title !== null && message !== null) {
-      createMessage(title, message, id, user.$id);
+  const sendMessage = () => {
+    if (title.trim() && message.trim()) {
+      createMessage(title.trim(), message.trim(), id, user?.$id || null);
+      toast.success("Message sent successfully!");
+      setTitle("");
+      setMessage("");
     } else {
-      toast.error("Details are empty!!!");
+      toast.error("Please fill in both the title and message.");
     }
-  }
+  };
 
   return (
-    <div className="w-full max-w-lg p-4 bg-slate-500 shadow-md shadow-gray-500 rounded-md mx-auto my-4 md:my-6 lg:my-8">
-      <p className="text-center font-bold text-white text-lg md:text-xl">
-        {`Compose an <anon-message/> to ${roomDetails?.roomName}`}
-      </p>
-      <form className="w-full">
-        <fieldset className="flex flex-col gap-1 my-4">
-          <label
-            className="font-bold text-sm md:text-base text-white"
-            htmlFor="title"
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gradient-to-br from-slate-700 to-slate-900">
+      <div className="w-full max-w-2xl bg-slate-600 shadow-lg rounded-lg p-6 sm:p-8 md:p-10">
+        <p className="text-center font-bold text-white text-lg sm:text-xl md:text-2xl mb-6">
+          {`Compose an <anon-message/> to ${roomDetails?.roomName || "..."}`}
+        </p>
+
+        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          {/* Title Field */}
+          <div>
+            <label
+              htmlFor="title"
+              className="block font-semibold text-sm sm:text-base text-white mb-2"
+            >
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Message Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full p-3 rounded-md bg-white text-gray-800 text-sm sm:text-base font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              required
+            />
+          </div>
+
+          {/* Message Field */}
+          <div>
+            <label
+              htmlFor="message"
+              className="block font-semibold text-sm sm:text-base text-white mb-2"
+            >
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="8"
+              placeholder="Compose your anonymous message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="w-full p-3 rounded-md bg-white text-gray-800 text-sm sm:text-base font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"
+              required
+            />
+          </div>
+
+          {/* Send Button */}
+          <button
+            type="submit"
+            onClick={sendMessage}
+            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 rounded-md text-sm sm:text-base shadow-md transition transform hover:scale-105"
           >
-            Title :
-          </label>
-          <input
-            className="w-full p-1 md:p-2 rounded-md text-sm md:text-base font-semibold outline-none shadow-sm"
-            type="text"
-            name="title"
-            id="title"
-            placeholder="Message Title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-        </fieldset>
-        <fieldset className="flex flex-col gap-1 my-4">
-          <label
-            className="font-bold text-sm md:text-base text-white"
-            htmlFor="message"
-          >
-            Message :
-          </label>
-          <textarea
-            className="w-full p-1 md:p-2 rounded-md text-sm md:text-base font-semibold outline-none shadow-sm"
-            type="text"
-            name="message"
-            id="message"
-            placeholder="compose an anonymous message..."
-            rows="10"
-            value={message}
-            onChange={(e) => {
-              setMessage(e.target.value);
-            }}
-          />
-        </fieldset>
-        <button
-          className="bg-indigo-300 p-2 md:p-3 rounded shadow-md font-bold text-sm md:text-base text-gray-700 w-full mt-4"
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            sendMessage();
-          }}
-        >
-          Send
-        </button>
-      </form>
+            Send Message
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
